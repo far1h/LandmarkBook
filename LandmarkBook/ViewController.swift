@@ -26,6 +26,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         UIImage(named: "Tivoli_Gardens")!,
     ]
     
+    var selectedLandmarkName = ""
+    var selectedLandmarkImage = UIImage()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -33,8 +36,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.delegate = self
         tableView.dataSource = self
         
-
-
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -50,6 +51,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         content.text = landmarkNames[indexPath.row]
         cell.contentConfiguration = content
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+         selectedLandmarkName = landmarkNames[indexPath.row]
+         selectedLandmarkImage = landmarkImages[indexPath.row]
+        performSegue(withIdentifier: "toDetailVC", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toDetailVC" {
+            let destinationVC = segue.destination as! DetailViewController
+            destinationVC.selectedLandmarkName = self.selectedLandmarkName
+            destinationVC.selectedLandmarkImage = self.selectedLandmarkImage
+        }
     }
 
 }
